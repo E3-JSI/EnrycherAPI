@@ -1,7 +1,10 @@
+Enrycher API
+=============
+
 Example 
 -------------
 
-Taken from [src/si/ijs/enrycher/Example.java]
+Taken from [Example.java][https://github.com/JozefStefanInstitute/EnrycherAPI/blob/master/src/si/ijs/enrycher/Example.java].
 
 	// input document
 	String docString = "Tiger Woods emerged from a traffic jam of his " +
