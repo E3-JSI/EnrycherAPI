@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://enrycher.com/enrycher-schema-1.1.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://enrycher.com/enrycher-schema-1.1.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="item">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="semantics" type="semantics" />
+              <xs:element name="pipeline" type="pipeline" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="text">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="title" minOccurs="0" type="sentencesContainer" />
+              <xs:element name="p" maxOccurs="unbounded" minOccurs="0" type="sentencesContainer" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="annotations" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="annotation" type="annotation" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="assertions" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="assertion" type="assertion" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  
+  
+  <xs:complexType name="semantics">
+    <xs:sequence>
+      <xs:element name="attribute" type="semanticsAttribute" minOccurs="0"  maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  
+  <xs:complexType name="pipeline">
+    <xs:sequence>
+      <xs:element name="tool" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType mixed="true">
+          <xs:attribute name="time" type="xs:dateTime" />
+		  <xs:attribute name="durationTimeMillis" type="xs:long" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  
+  <xs:complexType name="sentencesContainer">
+    <xs:sequence>
+      <xs:element name="sentence" maxOccurs="unbounded" type="sentence" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  
+  <xs:complexType name="annotation">
+    <xs:sequence>
+      <xs:element name="instances" type="instances" minOccurs="0" maxOccurs="1" />
+      <xs:element name="semantics" type="semantics" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" />
+    <xs:attribute name="displayName" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+  </xs:complexType>
+
+  
+  
+  <xs:complexType name="assertion">
+    <xs:sequence>
+      <xs:element name="subject" type="node" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="verb" type="node" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="object" type="node" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" />
+  </xs:complexType>
+  
+  
+  <xs:complexType  name="semanticsAttribute" mixed="true">
+	<xs:attribute name="displayName" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+
+    <xs:attribute name="resource" type="xs:anyURI" />
+  </xs:complexType>
+  
+  <xs:complexType name="sentence" mixed="true">
+    <xs:sequence>
+      <xs:element name="plainText" minOccurs="0" maxOccurs="1" />
+      <xs:element name="tokens" minOccurs="0" maxOccurs="1">
+        <xs:complexType mixed="true">
+          <xs:sequence>
+            <xs:element name="token" type="token" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+  
+  <xs:complexType name="instances">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="instance" name="instance" />
+    </xs:sequence>    
+  </xs:complexType>
+  
+  
+ 
+  <xs:complexType name="node" mixed="true">
+    <xs:sequence>
+      <xs:element name="modifier" type="node" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="annotationId" type="xs:int" />
+    <xs:attribute name="instanceId" type="xs:int"/>
+	<xs:attribute name="displayName" type="xs:string" />
+  </xs:complexType>
+  
+  
+  <xs:complexType name="instance">
+    <xs:sequence>
+      <xs:element name="token" type="textReference" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="sentence" type="textReference" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" />
+    <xs:attribute name="sentenceId" type="xs:string"/>
+    <xs:attribute name="words" type="xs:string" />
+  </xs:complexType>
+  
+  
+  <xs:complexType name="token" mixed="true">
+    <xs:attribute name="id" type="xs:string" />
+    <xs:attribute name="pos" type="xs:string" />
+	<xs:attribute name="lemma" type="xs:string" />
+	<xs:attribute name="start" type="xs:int" />
+	<xs:attribute name="end" type="xs:int" />
+  </xs:complexType>
+  
+  
+  <xs:complexType name="textReference">
+    <xs:attribute name="id" type="xs:string" />
+  </xs:complexType>
+  
+  
+</xs:schema>
